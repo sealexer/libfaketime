@@ -422,12 +422,12 @@ static void ft_shm_create(void) {
 #endif
   snprintf(sem_name, 255, "/faketime_sem_%ld", (long)pid);
   snprintf(shm_name, 255, "/faketime_shm_%ld", (long)pid);
-  if (SEM_FAILED == (semN = sem_open(sem_name, O_CREAT|O_EXCL, S_IWUSR|S_IRUSR, 1)))
+  if (SEM_FAILED == (semN = sem_open(sem_name, O_CREAT|O_EXCL, S_IWUSR|S_IRUSR|S_IRGRP, 1)))
   { /* silently fail on platforms that do not support sem_open() */
     return;
   }
   /* create shm */
-  if (-1 == (shm_fdN = shm_open(shm_name, O_CREAT|O_EXCL|O_RDWR, S_IWUSR|S_IRUSR)))
+  if (-1 == (shm_fdN = shm_open(shm_name, O_CREAT|O_EXCL|O_RDWR, S_IWUSR|S_IRUSR|S_IRGRP)))
   {
     perror("libfaketime: In ft_shm_create(), shm_open failed");
     exit(EXIT_FAILURE);
@@ -589,7 +589,7 @@ static void ft_shm_init (void)
       }
     }
 
-    if (-1 == (ticks_shm_fd = shm_open(shm_name, O_CREAT|O_RDWR, S_IWUSR|S_IRUSR)))
+    if (-1 == (ticks_shm_fd = shm_open(shm_name, O_CREAT|O_RDWR, S_IWUSR|S_IRUSR|S_IRGRP)))
     {
       perror("libfaketime: In ft_shm_init(), shm_open failed");
       exit(1);
