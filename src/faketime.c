@@ -260,7 +260,7 @@ int main (int argc, char **argv)
     snprintf(sem_name, PATH_BUFSIZE -1 ,"/faketime_sem_%ld", (long)getpid());
     snprintf(shm_name, PATH_BUFSIZE -1 ,"/faketime_shm_%ld", (long)getpid());
 
-    if (SEM_FAILED == (sem = sem_open(sem_name, O_CREAT|O_EXCL, S_IWUSR|S_IRUSR|S_IRGRP, 1)))
+    if (SEM_FAILED == (sem = sem_open(sem_name, O_CREAT|O_EXCL, S_IWUSR|S_IRUSR|S_IRGRP|S_IWGRP, 1)))
     {
       perror("faketime: sem_open");
       fprintf(stderr, "The faketime wrapper only works on platforms that support the sem_open()\nsystem call. However, you may LD_PRELOAD libfaketime without using this wrapper.\n");
@@ -268,7 +268,7 @@ int main (int argc, char **argv)
     }
 
     /* create shm */
-    if (-1 == (shm_fd = shm_open(shm_name, O_CREAT|O_EXCL|O_RDWR, S_IWUSR|S_IRUSR|S_IRGRP)))
+    if (-1 == (shm_fd = shm_open(shm_name, O_CREAT|O_EXCL|O_RDWR, S_IWUSR|S_IRUSR|S_IRGRP|S_IWGRP)))
     {
       perror("faketime: shm_open");
       if (-1 == sem_unlink(argv[2]))
